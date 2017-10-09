@@ -11,7 +11,7 @@ class ItemsTableSeeder extends Seeder
      */
     public function run()
     {
-    	$url = "http://cancan.lt/picos-visos";
+    	$url = "http://cancan.lt/sriubos";
     	$html = file_get_contents( $url);
     	libxml_use_internal_errors( true);
     	$doc = new DOMDocument; $doc->loadHTML( $html);
@@ -21,7 +21,7 @@ class ItemsTableSeeder extends Seeder
     	$content = $xpath->query( '//p[@itemprop="description"]');
     	$images = $xpath->query('//img[@itemprop="image"]');
 
-    	for ($i=0; $i < $name->length; $i++) 
+    	for ($i=1; $i < $name->length; $i++) 
     	{
     		$pizzaName = str_replace('pica','',$name->item($i)->nodeValue);
     		$pizzaName = str_replace('(aštri)','',$pizzaName);
@@ -33,7 +33,7 @@ class ItemsTableSeeder extends Seeder
     		$item_id = DB::table('items')->insertGetId([
     			'title'=>$pizzaName,
     			'content'=>$pizzaContent,
-    			'category_id'=>1
+    			'category_id'=>8
     		]);
 
     		$imageString = file_get_contents($images->item($i)->getAttribute('src'));

@@ -29,3 +29,5 @@ Route::get('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\Pr
 Route::post('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
 Route::resource('admin/categories', 'Admin\\CategoriesController');
 Route::resource('admin/items', 'Admin\\ItemsController');
+Route::resource('admin/complexes', 'Admin\\ComplexesController');
+Route::resource('admin/menus', 'Admin\\MenusController');
