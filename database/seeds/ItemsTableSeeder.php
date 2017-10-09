@@ -19,10 +19,7 @@ class ItemsTableSeeder extends Seeder
 
     	$name = $xpath->query('//h2[@itemprop="name"]');
     	$content = $xpath->query( '//p[@itemprop="description"]');
-
-    	$pizzaNames = array();
-    	$pizzaContents = array();
-    	$pizzas = array();
+    	$images = $xpath->query('//img[@itemprop="image"]');
 
     	for ($i=0; $i < $name->length; $i++) 
     	{
@@ -31,15 +28,16 @@ class ItemsTableSeeder extends Seeder
 
     		$pizzaContent = str_replace('Alergenai','',$content->item($i)->nodeValue);
 
-    		$pizzas[$pizzaName] = $pizzaContent;
-    	}
+    		// $pizzas[$pizzaName] = $pizzaContent;
 
-    	foreach ($pizzas as $pizzaName => $pizzaContent) {
-    		DB::table('items')->insert([
+    		$item_id = DB::table('items')->insertGetId([
     			'title'=>$pizzaName,
     			'content'=>$pizzaContent,
     			'category_id'=>1
-    			]);
+    		]);
+
+    		$imageString = file_get_contents($images->item($i)->getAttribute('src'));
+    		$save = file_put_contents(public_path().'/images/items/item_id_'. $item_id .'.png',$imageString);
     	}
     }
 }
