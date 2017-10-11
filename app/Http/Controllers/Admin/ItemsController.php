@@ -10,6 +10,8 @@ use App\Category;
 use Illuminate\Http\Request;
 use Session;
 
+use App\Helpers\ImageHelper;
+
 class ItemsController extends Controller
 {
     /**
@@ -54,14 +56,22 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
-			'title' => 'required',
-			'content' => 'required',
-			'category_id' => 'required'
-		]);
+            'title' => 'required',
+            'content' => 'required',
+            'category_id' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png|image|max:1000'
+        ]);
         $requestData = $request->all();
-        
-        Item::create($requestData);
+        $item = Item::create($requestData);
+
+        if($request->hasFile('image')){
+            $stored_img = ImageHelper::store_image($request->file('image'));
+            $item->img_id = $stored_img['img_id'];
+            $item->img_url = $stored_img['img_url'];
+            $item->save();
+        }
 
         Session::flash('flash_message', 'Item added!');
 
@@ -112,9 +122,15 @@ class ItemsController extends Controller
 			'category_id' => 'required'
 		]);
         $requestData = $request->all();
-        
         $item = Item::findOrFail($id);
         $item->update($requestData);
+
+        if($request->hasFile('image')){
+            $stored_img = ImageHelper::update_image($request->file('image'),$item->img_id);
+            $item->img_id = $stored_img['img_id'];
+            $item->img_url = $stored_img['img_url'];
+            $item->save();
+        }
 
         Session::flash('flash_message', 'Item updated!');
 
@@ -130,7 +146,9 @@ class ItemsController extends Controller
      */
     public function destroy($id)
     {
-        Item::destroy($id);
+        $item = Item::findOrFail($id);
+        ImageHelper::delete_image($item->img_id);
+        $item->delete();
 
         Session::flash('flash_message', 'Item deleted!');
 

@@ -8,6 +8,7 @@
         "php": ">=7.0.0",
         "appzcoder/laravel-admin": "^1.0",
         "fideloper/proxy": "~3.3",
+        "jrm2k6/cloudder": "0.4.*",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0"
     },

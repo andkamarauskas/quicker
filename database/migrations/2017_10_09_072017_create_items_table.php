@@ -14,11 +14,12 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function(Blueprint $table) {
             $table->increments('id');
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->text('content');
-            $table->integer('category_id')->unsigned();
-
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('img_id')->nullable();
+            $table->string('img_url')->nullable();
             $table->timestamps();
         });
     }

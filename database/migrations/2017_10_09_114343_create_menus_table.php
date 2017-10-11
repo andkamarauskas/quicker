@@ -17,6 +17,8 @@ class CreateMenusTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->decimal('price',5, 2);
+            $table->string('img_id')->nullable();
+            $table->string('img_url')->nullable();
             $table->integer('complex_id')->unsigned();
             $table->foreign('complex_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

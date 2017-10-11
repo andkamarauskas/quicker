@@ -11,7 +11,7 @@ class ItemsTableSeeder extends Seeder
      */
     public function run()
     {
-    	$url = "http://cancan.lt/sriubos";
+    	$url = "http://cancan.lt/picos";
     	$html = file_get_contents( $url);
     	libxml_use_internal_errors( true);
     	$doc = new DOMDocument; $doc->loadHTML( $html);
@@ -33,7 +33,7 @@ class ItemsTableSeeder extends Seeder
     		$item_id = DB::table('items')->insertGetId([
     			'title'=>$pizzaName,
     			'content'=>$pizzaContent,
-    			'category_id'=>8
+    			'category_id'=>1
     		]);
 
     		$imageString = file_get_contents($images->item($i)->getAttribute('src'));
